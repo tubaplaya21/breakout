@@ -1,6 +1,6 @@
 // index.js
 import Game from './game';
-import './game.css';
+import './breakout.css';
 
 /* Construct the game */
 new Game();
