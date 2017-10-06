@@ -20,7 +20,7 @@ export default class Paddle {
     return {x:this.x,y:this.y};
   }
 
-  update(input, gameOver) {
+  update(input) {
     var x = this.x;
     var y = this.y;
     this.direction = input.direction;

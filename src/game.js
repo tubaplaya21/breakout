@@ -15,6 +15,14 @@ import Paddle from './paddle';
      this.hitPaddle = false;
      this.ball = new Ball(250,200);
      this.paddle = new Paddle(205,450,15,90);
+     // Create bricks
+     this.bricks = [];
+     for(var i = 0; i < 10; i++) {
+       this.bricks[i] = [];
+       for(var j = 0; j < 5; j++) {
+         this.bricks[i][j] = new Brick(50*i+1,70+(22*j),'blue');
+       }
+     }
      // Create the back buffer canvas
      this.backBufferCanvas = document.createElement('canvas');
      this.backBufferCanvas.width = 500;
@@ -81,24 +89,36 @@ import Paddle from './paddle';
        // determine if the ball passed the paddle.
        var bPosition = this.ball.getPosition();
        var pPosition = this.paddle.getPosition();
+
        if(bPosition.y > 490) {
          return this.gameOver();
        }
        // determine if ball has collided with the paddle.
-       if(bPosition.y + 10 == pPosition.y && bPosition.x+10 >= pPosition.x && bPosition.x <=(pPosition.x+90)) {
+       if(bPosition.y + 10 >= pPosition.y && bPosition.x+10 >= pPosition.x && bPosition.x <=(pPosition.x+90)) {
          this.ball.collidePaddle();
        }
        // determine if ball has hit wall.
-       if(bPosition.x >= 492 || bPosition.x <= 0) {
+       if(bPosition.x >= 490 || bPosition.x <= 0) {
          this.ball.collideWall();
        }
        // determine if ball has hit ceiling.
        if(bPosition.y <= 40) {
          this.ball.collideCeiling();
        }
+       // determine if ball has hit brick.
+       for(var i = 0; i < 10; i++) {
+         for( var j = 0; j < 5; j++) {
+           var bkPosition = this.bricks[i][j].getPosition();
+           if(bPosition.y <= bkPosition.y+20 && bPosition.x+10 >= bkPosition.x
+             && bPosition.x <= bkPosition.x+48 && !this.bricks[i][j].isBroken) {
+             this.bricks[i][j].collideBall();
+             this.ball.collideCeiling();
+           }
+         }
+       }
 
        this.ball.update(this.gameOver);
-       this.paddle.update(this.input, this.gameOver);
+       this.paddle.update(this.input);
      }
    }
 
@@ -110,6 +130,13 @@ import Paddle from './paddle';
      this.backBufferContext.fillStyle = 'black';
      this.backBufferContext.font = '14px sans-serif';
      this.backBufferContext.fillText("Score: ",400,25);
+     for(var i = 0; i < 10; i++) {
+       for( var j = 0; j < 5; j++) {
+         if(!this.bricks[i][j].isBroken) {
+            this.bricks[i][j].render(this.backBufferContext);
+         }
+       }
+     }
      this.ball.render(this.backBufferContext);
      this.paddle.render(this.backBufferContext);
      this.screenBufferContext.drawImage(this.backBufferCanvas,0,0);
