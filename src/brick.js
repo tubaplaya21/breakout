@@ -6,6 +6,7 @@ export default class Brick {
     this.y = y;
     this.color = color;
     this.isBroken = false;
+    this.break = new Audio("break.wav");
 
     this.getPosition = this.getPosition.bind(this);
     this.collideBall = this.collideBall.bind(this);
@@ -17,6 +18,7 @@ export default class Brick {
   }
 
   collideBall() {
+    this.break.play();
     this.isBroken = true;
   }
 

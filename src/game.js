@@ -11,6 +11,7 @@ import Paddle from './paddle';
    constructor() {
      this.input = {direction: null};
      this.over = false;
+     this.start = true;
      this.brickCount = 0;
      this.score = 0;
      this.ball = new Ball(250,200);
@@ -51,11 +52,12 @@ import Paddle from './paddle';
      window.onkeydown = this.handleKeyDown;
      window.onkeyup = this.handleKeyUp;
      // Start the game loop
-     this.interval = setInterval(this.loop, 30);
+     this.interval = setInterval(this.loop, 20);
    }
 
     handleKeyDown(event) {
        event.preventDefault();
+       var message = document.getElementById("message");
        switch(event.key){
          case 'a':
          case 'ArrowLeft':
@@ -64,6 +66,10 @@ import Paddle from './paddle';
          case 'd':
          case 'ArrowRight':
             this.input.direction = 'right';
+            break;
+         case ' ':
+            this.gameStart = false;
+            message.innerText = "";
             break;
         }
    }
@@ -78,6 +84,11 @@ import Paddle from './paddle';
      }
    }
 
+   gameStart(time) {
+     var message = document.getElementById("message");
+     message.innerText = time;
+   }
+
    gameOver(didWin) {
      var message = document.getElementById("message");
      if(didWin) {
@@ -90,12 +101,14 @@ import Paddle from './paddle';
    }
 
    update() {
-     if(!this.over) {
+     var message = document.getElementById("message");
+     if(this.gameStart) {
+       message.innerText = "Press space to start.";
+     }
+     if(!this.over && !this.gameStart) {
        // determine if the ball passed the paddle.
        var bPosition = this.ball.getPosition();
        var pPosition = this.paddle.getPosition();
-
-       var audio = document.getElementById("audio");
 
        if(bPosition.y >= 490) {
          return this.gameOver(false);
