@@ -6,6 +6,7 @@ export default class Ball {
     this.y = y;
     this.ys = 5;
     this.xs = 2.5;
+    this.hit = new Audio("hit.wav");
 
     this.getPosition = this.getPosition.bind(this);
     this.collidePaddle = this.collidePaddle.bind(this);
@@ -20,6 +21,7 @@ export default class Ball {
   }
 
   collidePaddle(paddleMotion) {
+    this.hit.play();
     if(paddleMotion == null || this.xs > 8 || this.xs < -8) {
       this.ys = -this.ys;
     }
@@ -34,10 +36,12 @@ export default class Ball {
   }
 
   collideWall() {
+    this.hit.play();
     this.xs = -this.xs;
   }
 
   collideCeiling() {
+    this.hit.play();
     this.ys = -this.ys;
   }
 
