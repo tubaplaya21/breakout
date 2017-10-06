@@ -95,6 +95,8 @@ import Paddle from './paddle';
        var bPosition = this.ball.getPosition();
        var pPosition = this.paddle.getPosition();
 
+       var audio = document.getElementById("audio");
+
        if(bPosition.y >= 490) {
          return this.gameOver(false);
        }
@@ -131,9 +133,9 @@ import Paddle from './paddle';
            if(bPosition.x <= bkPosition.x+20 && bPosition.x+10 >= bkPosition.x
              && bPosition.y <= bkPosition.y+20
              && bPosition.y+10 >= bkPosition.y && !this.bricks[i][j].isBroken) {
-               this.bricks[i][j].collideBall();
-               this.ball.collideWall();
-               this.score += 10;
+             this.bricks[i][j].collideBall();
+             this.ball.collideWall();
+             this.score += 10;
            }
          }
        }
