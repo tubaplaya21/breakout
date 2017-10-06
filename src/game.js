@@ -153,6 +153,7 @@ import Paddle from './paddle';
      this.backBufferContext.fillStyle = 'black';
      this.backBufferContext.font = '14px sans-serif';
      this.backBufferContext.fillText("Score: " + this.score,400,25);
+     this.brickCount = 0;
      for(var i = 0; i < 10; i++) {
        for( var j = 0; j < 5; j++) {
          if(!this.bricks[i][j].isBroken) {
