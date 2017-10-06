@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/tubaplaya21/breakout/issues"
   },
-  "homepage": "https://github.com/tubaplaya21/breakout#readme",
+  "homepage": "https://tubaplaya21.github.io/breakout/",
   "devDependencies": {
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
