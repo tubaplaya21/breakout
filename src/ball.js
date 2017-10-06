@@ -19,8 +19,18 @@ export default class Ball {
     return {x:this.x,y:this.y};
   }
 
-  collidePaddle() {
-    this.ys = -this.ys;
+  collidePaddle(paddleMotion) {
+    if(paddleMotion == null || this.xs > 8 || this.xs < -8) {
+      this.ys = -this.ys;
+    }
+    else if(paddleMotion == 'right') {
+      this.ys = -this.ys;
+      this.xs += 2;
+    }
+    else if(paddleMotion == 'left') {
+      this.ys = -this.ys;
+      this.xs -= 2;
+    }
   }
 
   collideWall() {

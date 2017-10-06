@@ -7,12 +7,12 @@ import Paddle from './paddle';
 /** @class Game
  * Represents a game of breakout.
  */
-
  export default class Game {
    constructor() {
      this.input = {direction: null};
      this.over = false;
-     this.hitPaddle = false;
+     this.brickCount = 0;
+     this.score = 0;
      this.ball = new Ball(250,200);
      this.paddle = new Paddle(205,450,15,90);
      // Create bricks
@@ -78,9 +78,14 @@ import Paddle from './paddle';
      }
    }
 
-   gameOver() {
+   gameOver(didWin) {
      var message = document.getElementById("message");
-     message.innerText = "Game Over";
+     if(didWin) {
+       message.innerText = "You win!";
+     }
+     else {
+       message.innerText = "Game Over";
+     }
      this.over = true;
    }
 
@@ -90,12 +95,12 @@ import Paddle from './paddle';
        var bPosition = this.ball.getPosition();
        var pPosition = this.paddle.getPosition();
 
-       if(bPosition.y > 490) {
-         return this.gameOver();
+       if(bPosition.y >= 490) {
+         return this.gameOver(false);
        }
        // determine if ball has collided with the paddle.
        if(bPosition.y + 10 >= pPosition.y && bPosition.x+10 >= pPosition.x && bPosition.x <=(pPosition.x+90)) {
-         this.ball.collidePaddle();
+         this.ball.collidePaddle(this.input.direction);
        }
        // determine if ball has hit wall.
        if(bPosition.x >= 490 || bPosition.x <= 0) {
@@ -109,10 +114,26 @@ import Paddle from './paddle';
        for(var i = 0; i < 10; i++) {
          for( var j = 0; j < 5; j++) {
            var bkPosition = this.bricks[i][j].getPosition();
-           if(bPosition.y <= bkPosition.y+20 && bPosition.x+10 >= bkPosition.x
+           if(bPosition.y <= bkPosition.y+20 && bPosition.y+10 >= bkPosition.y
+             && bPosition.x+10 >= bkPosition.x
              && bPosition.x <= bkPosition.x+48 && !this.bricks[i][j].isBroken) {
              this.bricks[i][j].collideBall();
              this.ball.collideCeiling();
+             this.score += 10;
+           }
+           if(bPosition.y+10 <= bkPosition.y && bPosition.y >= bkPosition.y+20
+             && bPosition.x+10 >= bkPosition.x
+             && bPosition.x <= bkPosition.x+48 && !this.bricks[i][j].isBroken) {
+             this.bricks[i][j].collideBall();
+             this.ball.collidePaddle();
+             this.score += 10;
+           }
+           if(bPosition.x <= bkPosition.x+20 && bPosition.x+10 >= bkPosition.x
+             && bPosition.y <= bkPosition.y+20
+             && bPosition.y+10 >= bkPosition.y && !this.bricks[i][j].isBroken) {
+               this.bricks[i][j].collideBall();
+               this.ball.collideWall();
+               this.score += 10;
            }
          }
        }
@@ -129,13 +150,17 @@ import Paddle from './paddle';
      this.backBufferContext.fillRect(0,0,500,40);
      this.backBufferContext.fillStyle = 'black';
      this.backBufferContext.font = '14px sans-serif';
-     this.backBufferContext.fillText("Score: ",400,25);
+     this.backBufferContext.fillText("Score: " + this.score,400,25);
      for(var i = 0; i < 10; i++) {
        for( var j = 0; j < 5; j++) {
          if(!this.bricks[i][j].isBroken) {
-            this.bricks[i][j].render(this.backBufferContext);
+           this.bricks[i][j].render(this.backBufferContext);
+           this.brickCount++;
          }
        }
+     }
+     if(this.brickCount == 0) {
+       this.gameOver(true);
      }
      this.ball.render(this.backBufferContext);
      this.paddle.render(this.backBufferContext);
