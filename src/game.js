@@ -132,14 +132,14 @@ import Paddle from './paddle';
          for( var j = 0; j < 5; j++) {
            var bkPosition = this.bricks[i][j].getPosition();
            if(bPosition.y <= bkPosition.y+20 && bPosition.y >= bkPosition.y
-             && bPosition.x+5 > bkPosition.x-1 && bPosition.x+5 < bkPosition.x+50
+             && bPosition.x+5 >= bkPosition.x-1 && bPosition.x+5 < bkPosition.x+50
              && !this.bricks[i][j].isBroken) {
              this.bricks[i][j].collideBall();
              this.ball.collideCeiling();
              this.score += 10;
            }
            if(bPosition.y+10 >= bkPosition.y && bPosition.y+10 <= bkPosition.y+20
-             && bPosition.x+5 > bkPosition.x-1 && bPosition.x+5 < bkPosition.x+50
+             && bPosition.x+5 >= bkPosition.x-1 && bPosition.x+5 < bkPosition.x+50
              && !this.bricks[i][j].isBroken) {
              this.bricks[i][j].collideBall();
              this.ball.collidePaddle();
