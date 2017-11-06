@@ -69,7 +69,7 @@ import Paddle from './paddle';
             this.input.direction = 'right';
             break;
          case ' ':
-            this.gameStart = false;
+            this.start = false;
             message.innerText = "";
             break;
         }
@@ -98,10 +98,10 @@ import Paddle from './paddle';
 
    update() {
      var message = document.getElementById("message");
-     if(this.gameStart) {
+     if(this.start) {
        message.innerText = "Press space to start.";
      }
-     if(!this.over && !this.gameStart) {
+     if(!this.over && !this.start) {
        // determine if the ball passed the paddle.
        var bPosition = this.ball.getPosition();
        var pPosition = this.paddle.getPosition();
