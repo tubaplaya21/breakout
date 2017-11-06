@@ -85,11 +85,6 @@ import Paddle from './paddle';
      }
    }
 
-   gameStart(time) {
-     var message = document.getElementById("message");
-     message.innerText = time;
-   }
-
    gameOver(didWin) {
      var message = document.getElementById("message");
      if(didWin) {
